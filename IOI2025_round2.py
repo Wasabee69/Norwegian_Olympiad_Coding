@@ -1,7 +1,7 @@
 ###
 from sortedcontainers import SortedList
 from bisect import bisect_left as bisect_left
-
+import heapq
 def Q1(n, klosser):
     res = 0
     unq = {}
@@ -122,14 +122,14 @@ def Q4(n, m, q, drown, edges, queries):
     
     def expand(node):
         maximum[node] = drown[node]
-        q = [(maximum[node], node)]
-        while q:
-            year, node = q.pop()
+        heap = [(-maximum[node], node)]
+        while heap:
+            year, node = heapq.heappop(heap)
             for nei in graph[node]:
-                new_year = min(drown[nei], year)
+                new_year = min(drown[nei], -year)
                 if new_year > maximum[nei]:
                     maximum[nei] = new_year
-                    q.append((new_year, nei))
+                    heapq.heappush(heap, (-new_year, nei))
 
 
     ans = []
@@ -230,3 +230,4 @@ Q = 5
 S = "BBABAAAABBAABBABBBB"
 queries = [(1, 2), (1, 4), (3, 2), (4, 2), (5, 2)]
 print(Q5(N, Q, S, queries))
+
